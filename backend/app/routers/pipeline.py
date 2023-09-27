@@ -34,3 +34,29 @@ async def list_transformers():
 async def add_step(step: dict):
     pipeline.append(step)
     return { 'data': 'Step added.'}
+
+@router.put('/moveupdown')
+async def move_updown(step: dict):
+    
+    dir = step['dir']
+    
+    i = 0
+    for (idx, tr) in enumerate(pipeline):
+        if tr['id'] == step['transformer']['id']:
+            i = idx
+            t = tr
+            break
+    
+    if dir == 'up':
+        if i != 0:
+            pipeline.remove(t)
+            pipeline.insert(i-1, t)
+    
+    if dir == 'down':
+        if i != len(pipeline):
+            pipeline.remove(t)
+            pipeline.insert(i+1, t)
+    
+    return {
+        'data': f'Transformer moved.'
+    }

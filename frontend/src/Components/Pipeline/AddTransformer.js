@@ -26,7 +26,7 @@ function AddTransformer({ transformer }) {
       'id': uuid(),
       'transformer': transformer,
       'params': {
-        'num_intervals': 4
+        'num_intervals': 4 // TODO:
       }
     }
 
