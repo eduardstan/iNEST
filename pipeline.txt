@@ -1,0 +1,2 @@
+https://github.com/chakra-ui/chakra-ui/issues/457 <-- to read
+https://codesandbox.io/s/tender-shtern-6mmby?file=/src/index.js:395-412 <-- table with sticky head
