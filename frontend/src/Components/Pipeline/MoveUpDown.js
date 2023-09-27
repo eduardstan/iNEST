@@ -1,5 +1,7 @@
 import { useContext } from 'react'
 
+import { FaArrowUp, FaArrowDown } from 'react-icons/fa'
+
 import { Button } from '@chakra-ui/react'
 import API from '../../API'
 import PipelineContext from './PipelineContext'
@@ -22,9 +24,10 @@ function MoveUpDown({ transformer, direction }) {
   return (
     <>
       <Button
+        // rightIcon={direction == 'up' ? <ArrowUpIcon />: <ArrowDownIcon />}
         onClick={() => handleMoveUpDown(transformer, direction)}
       >
-        {direction == "up" ? 'Move up' : 'Move down'}
+        {direction == "up" ? <FaArrowUp />: <FaArrowDown />}
       </Button>
     </>
   )

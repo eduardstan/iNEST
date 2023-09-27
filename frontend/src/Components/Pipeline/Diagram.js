@@ -1,5 +1,7 @@
 import { useContext } from 'react'
 
+import ArrowUpIcon from 'react-icons'
+
 import {
   Button,
   Table,
@@ -27,6 +29,12 @@ function Diagram() {
                 Transformer name
               </Th>
               <Th>
+                Pre statistics
+              </Th>
+              <Th>
+                Post statistics
+              </Th>
+              <Th>
                 Move up
               </Th>
               <Th>
@@ -42,7 +50,12 @@ function Diagram() {
                       <Td>
                         {`${step.transformer.name}`}
                       </Td>
-
+                      <Td>
+                        Pre
+                      </Td>
+                      <Td>
+                        Post
+                      </Td>
                       <Td>
                         <MoveUpDown 
                           transformer={step}
