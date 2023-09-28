@@ -60,3 +60,15 @@ async def move_updown(step: dict):
     return {
         'data': f'Transformer moved.'
     }
+    
+@router.get('/prestats')
+async def pre_statistics():
+    return {
+        'data': f'Pre statistics computed'
+    }
+    
+@router.get('/poststats')
+async def post_statistics():
+    return {
+        'data': f'Post statistics computed'
+    }
