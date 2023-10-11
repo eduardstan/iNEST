@@ -1,7 +1,8 @@
-import { useContext } from 'react'
-import { useDisclosure } from '@chakra-ui/react'
+import { useContext, useState } from 'react'
+import { FormControl, FormLabel, useDisclosure } from '@chakra-ui/react'
 import {
   Button,
+  Input,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -16,6 +17,7 @@ import API from '../../API'
 import PipelineContext from './PipelineContext'
 
 function AddTransformer({ transformer }) {
+  const [params, setParams] = useState({...transformer.params})
   const {fetchPipeline} = useContext(PipelineContext)
   const modal = useDisclosure()
 
@@ -24,16 +26,27 @@ function AddTransformer({ transformer }) {
 
     const newStep = {
       'id': uuid(),
-      'transformer': transformer,
-      'params': {
-        'num_intervals': 4 // TODO:
-      }
+      ...transformer,
+      // 'name': transformer.name,
+      // 'doc': transformer.doc,
+      // 'tags': transformer.tags,
+      'params': params
     }
 
     await API.post('/pipeline/add', newStep)
     fetchPipeline()
 
     modal.onClose()
+  }
+
+  const handleChange = (event, type) => {
+    setParams({
+      ...params, 
+      [event.target.name]: { 
+        'value': event.target.value,
+        'type': type
+      } 
+    })
   }
 
   return (
@@ -54,6 +67,27 @@ function AddTransformer({ transformer }) {
         <ModalCloseButton />
 
         <ModalBody>
+          <FormControl>
+            {Object.entries(transformer.params).map(([par, val]) =>
+              <>
+                <FormLabel>
+                  {par} ({val.type})
+                </FormLabel>
+
+                <Input name={par} placeholder={val.value} onChange={(e) => handleChange(e, val.type)}></Input>
+              </>
+            )}
+          </FormControl>
+
+          {/* <Text>Parameters:</Text>
+          {Object.entries(transformer.params).map(([p, v]) => 
+            <>
+              <Text>{p}</Text>
+              <Input placeholder={v} onChange={handleChange}></Input>
+            </>
+          )} */}
+
+          <Text>Documentation:</Text>
           {transformer.doc.split('\n').map(str => <Text>{str}</Text>)}
         </ModalBody>
 

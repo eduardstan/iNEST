@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react'
 import MoveUpDown from './MoveUpDown'
 import PipelineContext from './PipelineContext'
+import DeleteTransformer from './DeleteTransformer'
 
 function Diagram() {
   const {pipeline} = useContext(PipelineContext)
@@ -40,6 +41,9 @@ function Diagram() {
               <Th>
                 Move down
               </Th>
+              <Th>
+                Delete
+              </Th>
             </Tr>
           </Thead>
             {
@@ -48,7 +52,7 @@ function Diagram() {
                   <>
                     <Tr>
                       <Td>
-                        {`${step.transformer.name}`}
+                        {`${step.name}`}
                       </Td>
                       <Td>
                         Pre
@@ -63,10 +67,13 @@ function Diagram() {
                         />
                       </Td>
                       <Td>
-                      <MoveUpDown 
-                          transformer={step}
-                          direction='down'
-                        />
+                        <MoveUpDown 
+                            transformer={step}
+                            direction='down'
+                          />
+                      </Td>
+                      <Td>
+                        <DeleteTransformer step={step} />
                       </Td>
                     </Tr>
                   </>

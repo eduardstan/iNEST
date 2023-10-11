@@ -12,11 +12,11 @@ router = APIRouter(
 files = [
     {
         'id': '55397165-6c85-c654-d781-61f655a35b39',
-        'path': '/home/edu/Dropbox/Work/Bolzano/Durst/Data/testdata/printer_unordered_574.csv'
+        'path': '/home/edu/Dropbox/Work/Bolzano/Durst/Data/regulardata/regular_printer_574.csv'
     },
     {
         'id': '41362c27-8f3b-d3cd-9ddf-b84c78be491e',
-        'path': '/home/edu/Dropbox/Work/Bolzano/Durst/Data/testdata/printer_unordered_565.csv'
+        'path': '/home/edu/Dropbox/Work/Bolzano/Durst/Data/regulardata/regular_printer_565.csv'
     }
 ]
 
@@ -63,6 +63,35 @@ async def panel_files(): # (freq: str): # , pivot_aggfn: str='mean'):
     idx = panel.index.levels[0]
     
     shapes = dict([(k, panel.xs(k, level=0, axis=0, drop_level=False).shape) for k in idx])
+    return {
+        "numinstance": len(panel.index.levels[0]),
+        "shapes": shapes
+    }
+
+def b_panel(files: list[str]):
+    processed = pd.DataFrame()
+    
+    for (i, file) in enumerate(files):
+        dfr = pd.read_csv(file['path'])
+        # path = file['path']
+        # df = pd.read_csv(path)
+        # dfp = df.pivot_table(index=['printer_id', 'time'], columns='sensor_id', values='signal_value', aggfunc=pivot_aggfn)
+        # dfp.index = dfp.index.set_levels([dfp.index.levels[0], pd.to_datetime(dfp.index.levels[1], utc=True)])
+        # dfr = dfp.resample(freq, level='time').mean()
+        dfr.set_index(pd.MultiIndex.from_product([[f'{ i }'], dfr.index.values], names=["printer_id", "time"]), inplace=True)
+        processed = pd.concat([processed, dfr])
+
+    processed.to_csv('/home/edu/Dropbox/Work/Bolzano/Durst/Data/regulardata/panel.csv')
+    return processed
+
+@router.post("/dataset")
+async def dataset():
+    panel = b_panel(files=files)
+    idx = panel.index.levels[0]
+    
+    shapes = dict([(k, panel.xs(k, level=0, axis=0, drop_level=False).shape) for k in idx])
+    
+    print(panel.head())
     return {
         "numinstance": len(panel.index.levels[0]),
         "shapes": shapes

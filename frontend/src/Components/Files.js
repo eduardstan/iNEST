@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import API from '../API'
 import AddFile from './Files/AddFile'
+import Dataset from './Files/Dataset'
 import FilesContext from './Files/FilesContext'
 import ProcessFiles from './Files/ProcessFiles'
 import ShowHideFiles from './Files/ShowHideFiles'
@@ -20,7 +21,8 @@ function Files() {
   return (
     <FilesContext.Provider value={{files, fetchFiles}}>
       <AddFile />
-      <ProcessFiles />
+      {/* <ProcessFiles /> */}
+      <Dataset />
       <ShowHideFiles />
     </FilesContext.Provider>
   )
